@@ -17,6 +17,7 @@ urlpatterns = [
     path("carsadd/",addcars),
     path("deletecars/<int:cars_id>/",deletecar),
     path("carsedit/<int:car_id>/",caredit),
-    path("carsupdate/<int:cars_id>/",carsupdate)
+    path("carsupdate/<int:cars_id>/",carsupdate),
+    path("product/list/",ProductList.as_view())
 
 ]

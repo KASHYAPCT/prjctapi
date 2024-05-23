@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,APIView
 from rest_framework.response import Response
 from .models import*
 from .serializers import*
@@ -184,3 +184,9 @@ def carsupdate(request,cars_id):
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
 
+
+class ProductList(APIView):
+    def get(self,request,format=None):
+        products=Product.objects.all()
+        serializer=Productserializer(products,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
