@@ -18,6 +18,19 @@ urlpatterns = [
     path("deletecars/<int:cars_id>/",deletecar),
     path("carsedit/<int:car_id>/",caredit),
     path("carsupdate/<int:cars_id>/",carsupdate),
-    path("product/list/",ProductList.as_view())
+    path("product/list/",ProductList.as_view()),
+    path("product/add",ProductAdd.as_view()),
+    path("product/edit/<int:product_id>/",ProductEdit.as_view()),
+    path("product/update/<int:product_id>/",ProductUpdate.as_view()),
+    path("product/delete/<int:product_id>/",ProductDelete.as_view()),
+    path("category/list/",CategoryList.as_view()),
+    path("category/view/<int:category_id>/",CategoryView.as_view()),
+    path("product/variant/<int:product_id>/",ProductAndVariant.as_view()),
+    path("product/list/variant/",ProductListVariant.as_view()),
+    path("car/list/variant/",CarsVariantList.as_view()),
+    path("user/",Sginup.as_view()),
+
+
+    
 
 ]
