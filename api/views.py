@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .models import*
 from .serializers import*
 from rest_framework import status
+from django.contrib.auth import authenticate
 @api_view()
 def hello_world(request):
     return Response({"message":"hello,world"})
@@ -325,3 +326,19 @@ class Sginup(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+
+class login(APIView):
+        def post(self,request,format=None):
+            data=request.data
+            username=data.get('username')
+            password=data.get('password')
+            user=authenticate(request,username=username,password=password)
+            if user is not None:
+                serializer=UserSerializer(user)
+                token,created=Token.objects.get_or_create(user=user)
+                return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+           
+            return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
+    
+    
