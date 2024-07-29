@@ -4,6 +4,7 @@ from .models import*
 from .serializers import*
 from rest_framework import status
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 @api_view()
 def hello_world(request):
     return Response({"message":"hello,world"})
@@ -341,4 +342,24 @@ class login(APIView):
            
             return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
     
+
+class LoginJWT(APIView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                     'user' :user.username,
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                    
+                },status=status.HTTP_200_OK)
+        else:
+             return Response({"detail": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
+       
     

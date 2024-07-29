@@ -29,7 +29,9 @@ urlpatterns = [
     path("product/list/variant/",ProductListVariant.as_view()),
     path("car/list/variant/",CarsVariantList.as_view()),
     path("user/",Sginup.as_view()),
-    path("userlogin/",login.as_view())
+    path("userlogin/",login.as_view()),
+    path("userlog/",LoginJWT.as_view())
+    
     
 
 
