@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from .models import*
 from .serializers import*
 from rest_framework import status
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 @api_view()
 def hello_world(request):
     return Response({"message":"hello,world"})
@@ -314,3 +316,39 @@ class Sginup(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+
+class login(APIView):
+        def post(self,request,format=None):
+            data=request.data
+            username=data.get('username')
+            password=data.get('password')
+            user=authenticate(request,username=username,password=password)
+            if user is not None:
+                serializer=UserSerializer(user)
+                token,created=Token.objects.get_or_create(user=user)
+                return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+           
+            return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
+    
+
+class LoginJWT(APIView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                     'user' :user.username,
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                    
+                },status=status.HTTP_200_OK)
+        else:
+             return Response({"detail": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
+       
+    
