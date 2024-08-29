@@ -274,18 +274,7 @@ class ProductAndVariant(APIView):
         return Response({'product':finaldata},status=status.HTTP_200_OK)
     
 
-# class ProductListVariant(APIView):
-#     def get(self,request,format=None):
-#         products=Product.objects.all()
-#         finaldata=[]
-#         for product in products:
-#             productserializer=Productserializer(product)
-#             productvarient=ProductVariant.objects.filter(product=product)
-#             productvariantserializer=ProductVariantserializer(productvarient,many=True)
-#             productdata=productserializer.data
-#             productdata['productvarient']=productvariantserializer.data
-#             finaldata.append(productdata)
-#             return Response({'product':finaldata},status=status.HTTP_200_OK)
+
 
 class ProductListVariant(APIView):
     def get(self,request,format=None):
