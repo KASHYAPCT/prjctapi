@@ -1,6 +1,7 @@
 
 from django.urls import path
 from .views import *
+from rest_framework_simplejwt.views import TokenBlacklistView
 urlpatterns = [
     path("helloworld/",hello_world,name="helloworld"),
     path("productlist/",product,name="productlist"),
@@ -30,7 +31,8 @@ urlpatterns = [
     path("car/list/variant/",CarsVariantList.as_view()),
     path("user/",Sginup.as_view()),
     path("userlogin/",login.as_view()),
-    path("userlog/",LoginJWT.as_view())
+    path("userlog/",LoginJWT.as_view()),
+    path('logout/', TokenBlacklistView.as_view(), name='token_blacklist'),
     
     
 

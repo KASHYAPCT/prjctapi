@@ -5,6 +5,7 @@ from .serializers import*
 from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import BasePermission
 @api_view()
 def hello_world(request):
     return Response({"message":"hello,world"})
@@ -349,6 +350,17 @@ class LoginJWT(APIView):
         else:
              return Response({"detail": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
             
-            
-       
-    
+
+
+class IsTokenValid(BasePermission): 
+    def has_permission(self, request, view):
+        user_id = request.user.id            
+        is_allowed_user = True
+        token = request.auth.decode("utf-8")
+        try:
+            is_blackListed = BlackListedToken.objects.get(user=user_id, token=token)
+            if is_blackListed:
+                is_allowed_user = False
+        except BlackListedToken.DoesNotExist:
+            is_allowed_user = True
+        return is_allowed_user
